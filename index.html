@@ -181,12 +181,47 @@ body{background:var(--bg);font-family:'Zen Maru Gothic',sans-serif;color:var(--t
 .slist::-webkit-scrollbar-track{background:transparent;}
 .row-hdr{font-size:.62rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);padding:10px 4px 6px;display:flex;align-items:center;gap:6px;}
 .row-hdr::after{content:'';flex:1;height:1px;background:var(--pink3);opacity:.5;}
-.srow{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;transition:background .15s;}
+.srow{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;transition:background .15s;text-decoration:none;color:inherit;}
 .srow:hover{background:var(--pf-bg);}
 .sdot{width:5px;height:5px;border-radius:50%;background:var(--pink2);flex-shrink:0;}
 .sname{font-size:.82rem;font-weight:600;color:var(--text);flex:1;}
 .sart{font-size:.72rem;color:var(--text3);font-weight:500;}
 .scnt{font-size:.68rem;color:var(--text3);margin-top:8px;text-align:right;font-weight:600;}
+
+/* ARTIST LIST */
+.alist-box{background:var(--song-bg);backdrop-filter:blur(20px);border:1px solid var(--card-border);border-radius:28px;padding:28px;margin-bottom:18px;transition:background .4s,border-color .4s;position:relative;overflow:hidden;}
+.alist-box::after{content:'';position:absolute;top:0;left:24px;right:24px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);}
+.afbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.afbtn{font-family:'Zen Maru Gothic',sans-serif;font-size:.7rem;font-weight:700;padding:5px 13px;border-radius:100px;border:1.5px solid var(--pink3);background:transparent;color:var(--text2);cursor:pointer;transition:all .18s;}
+.afbtn:hover{background:var(--pink4);border-color:var(--pink2);}
+.afbtn.active{background:linear-gradient(135deg,var(--rose),var(--mauve));color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(251,111,146,.32);}
+.alist-inner{max-height:320px;overflow-y:auto;padding-right:4px;}
+.alist-inner::-webkit-scrollbar{width:4px;}
+.alist-inner::-webkit-scrollbar-thumb{background:var(--pink3);border-radius:4px;}
+.alist-inner::-webkit-scrollbar-track{background:transparent;}
+.arow-hdr{font-size:.62rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);padding:10px 4px 6px;display:flex;align-items:center;gap:6px;}
+.arow-hdr::after{content:'';flex:1;height:1px;background:var(--pink3);opacity:.5;}
+.arow{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;transition:background .15s;cursor:pointer;}
+.arow:hover{background:var(--pf-bg);}
+.adot{width:5px;height:5px;border-radius:50%;background:var(--pink2);flex-shrink:0;}
+.aname{font-size:.85rem;font-weight:700;color:var(--text);flex:1;}
+.atap{font-size:.68rem;color:var(--text3);font-weight:500;}
+.acnt-lbl{font-size:.68rem;color:var(--text3);margin-top:8px;text-align:right;font-weight:600;}
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;animation:mFadeIn .2s ease;}
+@keyframes mFadeIn{from{opacity:0}to{opacity:1}}
+.modal-box{background:var(--bg2);border:1px solid var(--card-border);border-radius:24px;width:100%;max-width:400px;max-height:80vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:popIn .28s cubic-bezier(.34,1.56,.64,1);}
+.modal-head{padding:18px 20px 14px;border-bottom:1px solid var(--card-border);display:flex;align-items:center;gap:10px;}
+.modal-title{font-size:1rem;font-weight:900;color:var(--text);flex:1;}
+.modal-close{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--pink3);background:transparent;color:var(--text3);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:transform .25s,background .15s;font-family:'Zen Maru Gothic',sans-serif;}
+.modal-close:hover{background:var(--pink4);transform:scale(1.15) rotate(90deg);}
+.modal-body{overflow-y:auto;padding:12px 16px 16px;flex:1;}
+.modal-body::-webkit-scrollbar{width:4px;}
+.modal-body::-webkit-scrollbar-thumb{background:var(--pink3);border-radius:4px;}
+.modal-srow{display:flex;align-items:center;gap:8px;padding:8px 8px;border-radius:10px;cursor:pointer;text-decoration:none;transition:background .15s;}
+.modal-srow:hover{background:var(--pf-bg);}
+.modal-scnt{font-size:.65rem;color:var(--text3);text-align:right;margin-top:8px;font-weight:600;}
 
 /* FOOTER */
 .footer{text-align:center;margin-top:40px;}
@@ -366,7 +401,39 @@ body{background:var(--bg);font-family:'Zen Maru Gothic',sans-serif;color:var(--t
     <div class="scnt" id="scnt"></div>
   </div>
 
-  <footer class="footer reveal">
+  <!-- ARTIST LIST -->
+  <div class="alist-box reveal">
+    <div class="sec-lbl"><span></span>すきなアーティスト<span></span></div>
+    <div class="afbar" id="afbar">
+      <button class="afbtn active" data-ar="all">すべて</button>
+      <button class="afbtn" data-ar="あ">あ行</button>
+      <button class="afbtn" data-ar="か">か行</button>
+      <button class="afbtn" data-ar="さ">さ行</button>
+      <button class="afbtn" data-ar="た">た行</button>
+      <button class="afbtn" data-ar="な">な行</button>
+      <button class="afbtn" data-ar="は">は行</button>
+      <button class="afbtn" data-ar="ま">ま行</button>
+      <button class="afbtn" data-ar="や">や行</button>
+      <button class="afbtn" data-ar="ら">ら行</button>
+      <button class="afbtn" data-ar="わ">わ行</button>
+      <button class="afbtn" data-ar="ABC">ABC</button>
+    </div>
+    <div class="alist-inner" id="alist"></div>
+    <div class="acnt-lbl" id="acnt"></div>
+  </div>
+
+  <!-- ARTIST MODAL -->
+  <div class="modal-overlay" id="artistModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <span class="modal-title" id="modalTitle">🌹 アーティスト</span>
+        <button class="modal-close" id="modalClose">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+    <footer class="footer reveal">
     <div class="foot-line"><span class="foot-txt">ぽっける's page</span></div>
     <div class="foot-h">♡ ✿ ♡ ✿ ♡</div>
   </footer>
@@ -503,20 +570,22 @@ revEls.forEach(el=>obs.observe(el));
 
 /* SONGS */
 const SD={
-  'あ':[['愛唄','GReeeeN'],['愛とか恋とか','Novelbright'],['貴方解剖純愛歌〜死ね〜','あいみょん'],['あの夢をなぞって','YOASOBI'],['赤いスイートピー','松田聖子'],['IRIS OUT','米津玄師'],['あゝ無情','アン・ルイス'],['青空のラプソディ','fhana'],['青と夏','Mrs.GREEN APPLE'],['明日への手紙','手嶌葵'],['アイノカタチ','MISIA'],['アゲハ蝶','ポルノグラフィティ'],['青いベンチ','サスケ'],['愛をこめて花束を','Superfly'],['アイネクライネ','米津玄師'],['雨とカプチーノ','ヨルシカ'],['一途','King Gnu'],['いつも何度でも','木村弓'],['いのちの名前',''],['ウミユリ海底譚','n-buna'],['ヴァンパイア','DECO*27'],['エゴロック','すりぃ'],['乙女解剖','DECO*27'],['おねがいダーリン','ナナホシ管弦楽団'],['命に嫌われている','カンザキイオリ']],
-  'か':[['Girls','GARNIDELIA'],['変わらないもの','奥華子'],['カタオモイ','Aimer'],['怪物','YOASOBI'],['奏','スキマスイッチ'],['風になる','つじあやの'],['気まぐれロマンティック','いきものがかり'],['キセキ','GReeeeN'],['ギターと孤独と蒼い惑星','結束バンド'],['ギラギラ','Ado'],['KICKBACK','米津玄師'],['君じゃなきゃダメみたい','オーイシマサヨシ'],['群青','YOASOBI'],['月光花','Janne Da Arc'],['恋のABO','NEWS'],['コネクト','ClariS'],['神のまにまに','れるりり'],['からくりピエロ','40mP'],['きゅうくらりん','いよわ'],['QUEEN','Kanaria'],['心做し','蝶々P'],['ゴーストルール','DECO*27'],['コールボーイ','syudou'],['Connecting','halyosy']],
-  'さ':[['サムライハート','SPYAIR'],['残酷な天使のテーゼ','高橋洋子'],['残響散歌','Aimer'],['さよーならまたいつか!','米津玄師'],['サウダージ','ポルノグラフィティ'],['さよならエレジー','菅田将暉'],['サインはB','B小町'],['三文小説','King Gnu'],['逆夢','King Gnu'],['新宝島','サカナクション'],['春雷','米津玄師'],['宿命','Official髭男dism'],['シルエット','KANA-BOON'],['シンデレラボーイ','SaucyDog'],['錠剤','TOOBOE'],['祝福','YOASOBI'],['水平線','back number'],['SPECIALZ','King Gnu'],['星間飛行','ランカ・リー'],['青春コンプレックス','結束バンド'],['聖少女領域','ALIPROJECT'],['失敗作少女','かいりきベア'],['深海少女','ゆうゆ'],['千本桜','黒うさP'],['さよならプリンセス','Kai']],
-  'た':[['魂のルフラン','高橋洋子'],['ダーリン','須田景凪'],['W/X/Y','Tani Yuuki'],['ただ君に晴れ','ヨルシカ'],['タマシイレボリューション','Superfly'],['だから僕は音楽を辞めた','ヨルシカ'],['高嶺の花子さん','back number'],['CHAINSAW BLOOD','Vaundy'],['チェリー','スピッツ'],['ツキミソウ','Novelbright'],['点描の唄',''],['曇天','DOES'],['トウキョウシャンディランデヴ','ツミキ'],['ドライフラワー','優里'],['誰かの心臓になれたなら','ユリイ・カノン'],['ダンスロボットダンス','ナユタン星人'],['東京テディベア','Neru']],
-  'な':[['名前のない怪物','EGOIST'],['人間みたいね','キタニタツヤ'],['ネオメロドラマティック','ポルノグラフィティ'],['ノーザンクロス','シェリル・ノーム']],
-  'は':[['Butterfly','和田光司'],['ハッピーミルフィーユ','初星学園'],['Happiness','嵐'],['花になって','緑黄色社会'],['ハルジオン','YOASOBI'],['初恋サイダー','Buono!'],['春を告げる','yama'],['花に亡霊','ヨルシカ'],['晴る','ヨルシカ'],['ヒッチコック','ヨルシカ'],['ひまわりの約束','秦基博'],['ブルーバード','いきものがかり'],['プロポーズ','なとり'],['Pretender','Official髭男dism'],['ベテルギウス','優里'],['パンダヒーロー','ハチ'],['ハロハワユ','すこっぷ'],['ビターチョコデコレーション','syudou'],['ヒバナ','DECO*27'],['独りんぼエンヴィー','電ポルP']],
-  'ま':[['マリーゴールド','あいみょん'],['丸の内サディスティック','椎名林檎'],['みちしるべ','茅原実里'],['ミックスナッツ','Official髭男dism'],['Mela!','緑黄色社会'],['メリッサ','ポルノグラフィティ'],['メランコリーキッチン','米津玄師'],['マトリョシカ','ハチ'],['メルト','halyosy'],['メランコリック','junky'],['モザイクロール','DECO*27'],['妄想感傷代償連盟','DECO*27']],
-  'や':[['夢見る少女じゃいられない','相川七瀬'],['夜に駆ける','YOASOBI'],['ヨワネハキ','和ぬか'],['ようこそジャパリパークへ','どうぶつビスケット'],['夕立のりぼん','みきとP'],['夜明けと蛍','n-buna'],['吉原ラメント','亜沙'],['酔いどれ知らず','Kanaria']],
-  'ら':[['ライラック','Mrs.GREEN APPLE'],['瑠璃色の地球','松田聖子'],['レディメイド','Ado'],['恋愛サーキュレーション','千石撫子'],['ロマンスの神様','広瀬香美'],['ラプラスショコラ','kai'],['ラブカ？','柊キライ'],['林檎売りの泡沫少女','yukkedoluce'],['六兆年と一夜物語','kemu'],['ロキ','みきとP'],['ローリンガール','wowaka'],['ロミオとシンデレラ','doriko'],['恋愛裁判','40mP']],
-  'わ':[['忘れてやらない','結束バンド'],['ワルキューレがとまらない','ワルキューレ'],['ワールドイズマイン','']],
-  'other':[['only my Railgun','fripSide'],['oath sign','LiSA'],["Snow halation","μ's"],['Fire Bird','Roselia'],["Arrietty's Song",'セシル・コルベル'],['GONG','JAM Project'],['D/N/A','Azari'],['daze','じん'],['Player X','King Gnu']]
+  'あ':[['愛唄','GReeeeN'],['愛とか恋とか','Novelbright'],['貴方解剖純愛歌〜死ね〜','あいみょん'],['あの夢をなぞって','YOASOBI'],['赤いスイートピー','松田聖子'],['IRIS OUT','米津玄師'],['あゝ無情','アン・ルイス'],['青空のラプソディ','fhana'],['アンバランスなKissをして','高橋ひろ'],['青と夏','Mrs.GREEN APPLE'],['明日への手紙','手嶌葵'],['アイノカタチ','MISIA'],['アゲハ蝶','ポルノグラフィティ'],['青いベンチ','サスケ'],['愛をこめて花束を','Superfly'],['Arrietty\'s Song','セシル・コルベル'],['悪魔の子','ヒグチアイ'],['アイネクライネ','米津玄師'],['雨とカプチーノ','ヨルシカ'],['愛のうた〜ピクミンのテーマ','あのバンド'],['結束バンド','AXIA〜ダイスキでダイキライ〜'],['ワルキューレ','Absolute 5'],['King Gnu','いつも何度でも'],['木村弓','いのちの名前'],['一度だけの恋なら','ワルキューレ'],['いけないボーダーライン','ワルキューレ'],['インフィニティ','シェリル・ノーム'],['イケナイ太陽','ORANGE RANGE'],['嘘','シド'],['うまぴょい伝説','ウマ娘'],['ウルトラソウル','B\'z'],['YELL','いきものがかり'],['Only My Railgun','fripSide'],['oath sign','LiSA'],['天ノ弱','164'],['雨とペトラ','バルーン'],['アンヘル','かいりきベア'],['アンノウン・マザーグース','wowaka'],['アンハッピーリフレイン','wowaka'],['EYE','Kanaria'],['曖昧劣情Lover','電ポルP'],['あだぽしゃ','いよわ'],['アカイト','みきとP'],['アイロニ','すこっぷ'],['アスノヨゾラ哨戒班','Orangestar'],['1925','とみー'],['命に嫌われている','カンザキイオリ'],['ウミユリ海底譚','n-buna'],['うそつき','つなまる'],['ヴァンパイア','DECO*27'],['エゴロック','すりぃ'],['ELECT','niki'],['えれくとりっく・えんじぇぅ','ヤスオ'],['おちゃめ機能','ラマーズP'],['乙女解剖','DECO*27'],['おねがいダーリン','ナナホシ管弦楽団']],
+  'か':[['かくしん的☆めたもるふぉ〜ぜっ!','干物妹!うまるちゃん'],['Girls','GARNiDELiA'],['変わらないもの','奥華子'],['カタオモイ','Aimer'],['硝子の少年','KinKi Kids'],['怪物','YOASOBI'],['奏','スキマスイッチ'],['風になる','つじあやの'],['Kiss me 愛してる','℃-ute'],['気まぐれロマンティック','いきものがかり'],['華奢なリップ','ジェニーハイ feat. ちゃんみな'],['きょういくばんぐみのうた','やみのおねえさん'],['キセキ','GReeeeN'],['ギターと孤独と蒼い惑星','結束バンド'],['ギラギラ','Ado'],['KICK BACK','米津玄師'],['凶夢伝染','ALI PROJECT'],['禁じられた遊び','ALI PROJECT'],['君じゃなきゃダメみたい','オーイシマサヨシ'],['群青','YOASOBI'],['黒猫 ～Adult Black Cat～','Acid Black Cherry'],['月光花','Janne Da Arc'],['喧嘩上等','氣志團'],['檄！帝国華撃団','サクラ大戦'],['恋のABO','NEWS'],['恋のヒメヒメ☆ぺったんこ','弱虫ペダル'],['恋は混沌の隷也','這いよれ! ニャル子さん'],['コネクト','ClariS'],['GONG','JAM Project'],['コッペリアの柩','ALI PROJECT'],['月蝕グランギニョル','ALI PROJECT'],['心絵','ロードオブメジャー'],['転がる岩、君に朝が降る','ASIAN KUNG-FU GENERATION'],['極楽浄土','GARNiDELiA'],['神のまにまに','れるりり'],['花瓶に触れた','バルーン'],['神っぽいな','ピノキオピー'],['からくりピエロ','40mP'],['Calc.','ジミーサムP'],['かくしごと','まふまふ'],['限りなく灰色へ','すりぃ'],['キリトリセン','40mP'],['きゅうくらりん','いよわ'],['キライ・キライ・ジガヒダイ','和田たけあき'],['キャットラビング','香椎モイミ'],['クノイチでも恋がしたい','みきとP'],['QUEEN','Kanaria'],['心做し','蝶々P'],['小悪魔だってかまわない','めいちゃん'],['ゴーストルール','DECO*27'],['コールボーイ','syudou'],['Connecting','halyosy']],
+  'さ':[['The Everlasting Guilty Crown','EGOIST'],['サムライハート','SPYAIR'],['残酷な天使のテーゼ','高橋洋子'],['残響散歌','Aimer'],['さよーならまたいつか!','米津玄師'],['サウダージ','ポルノグラフィティ'],['さよならの夏〜コクリコ坂から〜',''],['さよならエレジー','菅田将暉'],['サインはB','B小町'],['三文小説','King Gnu'],['逆夢','King Gnu'],['新宝島','サカナクション'],['栞','クリープハイプ'],['春雷','米津玄師'],['宿命','Official髭男dism'],['シルエット','KANA-BOON'],['シンデレラボーイ','SaucyDog'],['Sincerely','TRUE'],['Shangri-La','angela'],['錠剤','TOOBOE'],['祝福','YOASOBI'],['ずうっといっしょ','キタニタツヤ'],['好き好き大好き','戸川純'],['Snow halation','μ\'s'],['水平線','back number'],['SPECIALZ','King Gnu'],['星間飛行','ランカ・リー'],['青春花道','ポルノグラフィティ'],['青春コンプレックス','結束バンド'],['星座になれたら','結束バンド'],['聖少女領域','ALIPROJECT'],['創聖のアクエリオン','AKINO'],['サリシノハラ','みきとP'],['サラマンダー','DECO*27'],['さよならプリンセス','Kai'],['サンドリヨン','シグナルP'],['しわ','buzzG'],['心拍数♯0822','蝶々P'],['少女レイ','みきとP'],['失敗作少女','かいりきベア'],['深海少女','ゆうゆ'],['純情スカート','40mP'],['シザーハンズ','Nem'],['just be friends',''],['ジャンキーナイトタウンオーケストラ','すりぃ'],['人生リセットボタン','kemu'],['シリョクケンサ','40mP'],['少年と魔法のロボット','40mP'],['白い雪のプリンセスは','のぼる↑'],['ストリーミングハート','DECO*27'],['ステラ','じん'],['スロウダウナー','ろくろ'],['スキスキ絶頂症','電ポルP'],['セツナトリップ','Last note.'],['千本桜','黒うさP'],['それがあなたの幸せとしても','Heavenz']],
+  'た':[['魂のルフラン','高橋洋子'],['ダーリン','須田景凪'],['W/X/Y','Tani Yuuki'],['ただ君に晴れ','ヨルシカ'],['太陽曰く燃えよカオス','這いよれ! ニャル子さん'],['ダダダ天使','ナナホシ管弦楽団'],['だいしきゅーだいしゅき','femme fatale'],['タマシイレボリューション','Superfly'],['だから僕は音楽を辞めた','ヨルシカ'],['高嶺の花子さん','back number'],['CHAINSAW BLOOD','Vaundy'],['Daydream cafe','ご注文はうさぎですか？'],['チェリー','スピッツ'],['月のワルツ','みんなのうた'],['ツキミソウ','Novelbright'],['デビルマンのうた',''],['テルーの唄',''],['点描の唄',''],['曇天','DOES'],['トウキョウシャンディランデヴ','ツミキ'],['となりのトトロ','井上あすみ'],['とてと','パペットスンスン'],['友～旅立ちの時〜','ゆず'],['とくベチュ、して','=LOVE'],['ドライフラワー','優里'],['Don\'t_say_"lazy"','放課後ティータイム'],['桃源恋歌','GARNiDELiA'],['誰かの心臓になれたなら','ユリイ・カノン'],['だんだん早くなる','40mP'],['ダーリンダンス','かいりきベア'],['ダンスロボットダンス','ナユタン星人'],['チェリーポップ','DECO*27'],['チェチェ・チェック・ワンツー','和田たけあき'],['地球最後の告白を','kemu'],['ツギハギスタッカート','とあ'],['テトリス',''],['帝国少女','R sound Design'],['テレパシ','DECO*27'],['デーモンロード','Kanaria'],['デリへル呼んだら君が来た','ナナホシ管弦楽団'],['D/N/A','Azari'],['daze','じん'],['te-yut-te','フェイP'],['とても綺麗な六月でした','Eight'],['東京テディベア','Neru'],['ドレミファロンド','40mP'],['トリノコシティ','40mP']],
+  'な':[['名前のない怪物','EGOIST'],['ニホンノミカタ-ネバダカラキマシタ-',''],['人間みたいね','キタニタツヤ'],['ネオメロドラマティック','ポルノグラフィティ'],['ノーザンクロス','シェリル・ノーム'],['偽物人間40号','']],
+  'は':[['Butterfly','和田光司'],['ハッピーミルフィーユ','初星学園'],['Happiness','嵐'],['花になって','緑黄色社会'],['ハルジオン','YOASOBI'],['初恋サイダー','Buono!'],['爆裂愛してる','M!LK'],['春を告げる','yama'],['vinyl','King Gnu'],['115万キロのフィルム','Official髭男dism'],['晩餐歌','tuki.'],['花に亡霊','ヨルシカ'],['晴る','ヨルシカ'],['ハム太郎とっとこうた',''],['破滅の純情','ワルキューレ'],['ヒッチコック','ヨルシカ'],['「ひとりで生きられそう」ってそれってねえ、褒めているの？','Juice=Juice'],['秘密の扉から会いにきて','田村ゆかり'],['ヒステリックナイトガール','PSYQUI'],['ひまわりの約束','秦基博'],['フライングゲット','AKB48'],['ふ・れ・ん・ど・し・た・い','がっこうぐらし'],['Fire Bird','Roselia'],['ブルーバード','いきものがかり'],['プロポーズ','なとり'],['Pretender','Official髭男dism'],['Player X','King Gnu'],['ふわふわ時間','放課後ティータイム'],['ベテルギウス','優里'],['亡國覚醒カタルシス','ALIPROJECT'],['HOTLIMIT','TM Revolution'],['僕らの戦場','ワルキューレ'],['敗北の少年','kemu'],['パンダヒーロー','ハチ'],['抜錨','ナナホシ管弦楽団'],['バグ','かいりきベア'],['ハロハワユ','すこっぷ'],['＊ハロー、プラネット。','sasakure.UK'],['Happy Halloween','junky'],['ビターチョコデコレーション','syudou'],['ヒバナ','DECO*27'],['独りんぼエンヴィー','電ポルP'],['ビーストインザビューティ','Royal Scandal'],['ブリキノダンス','日向電工'],['プロトディスコ',''],['フラジール','ぬゆり'],['ホシアイ','レフティーモンスター'],['僕がモンスターになった日','れるりり'],['potatoになっていく','Neru']],
+  'ま':[['マリーゴールド','あいみょん'],['丸の内サディスティック','椎名林檎'],['みちしるべ','茅原実里'],['ミックスナッツ','Official髭男dism'],['Mela！','緑黄色社会'],['メリッサ','ポルノグラフィティ'],['メランコリーキッチン','米津玄師'],['モエチャッカファイア','弌誠'],['moreきゅん奴隷','戦慄かなの'],['盛れ！ミ・アモーレ','Juice=Juice'],['マトリョシカ','ハチ'],['回る空うさぎ','Orangestar'],['マーメイドシアター','Royal Scandal'],['マジックリングナイト','Royal Scandal'],['magnet',''],['三日月ステップ','r-906'],['右肩の蝶','のりP'],['結ンデ開イテ羅刹ト骸','ハチ'],['メーベル','バルーン'],['メルト','halyosy'],['メリュー','n-buna'],['メランコリック','junky'],['モニタリング','DECO*27'],['妄想スケッチ','40mP'],['モザイクロール','DECO*27'],['妄想税','DECO*27'],['妄想感傷代償連盟','DECO*27'],['妄想疾患⬛︎ガール','れるりり']],
+  'や':[['勇侠青春謳','ALIPROJECT'],['夢見る少女じゃいられない','相川七瀬'],['夜に駆ける','YOASOBI'],['ヨワネハキ','和ぬか'],['ようこそジャパリパークへ','どうぶつビスケット'],['夕立のりぼん','みきとP'],['幽霊東京','Ayase'],['ゆめゆめ','DECO*27'],['夜明けと蛍','n-buna'],['夜もすがら君想ふ','TOKOTOKO'],['吉原ラメント','亜沙'],['ヨンジュウナナ','みきとP'],['酔いどれ知らず','Kanaria']],
+  'ら':[['ライラック','Mrs.GREEN APPLE'],['瑠璃色の地球','松田聖子'],['レディメイド','Ado'],['恋愛サーキュレーション','千石撫子'],['ロマンスの神様','広瀬香美'],['ラプラスショコラ','kai'],['ラブカ？','柊キライ'],['リバーシブル・キャンペーン','DECO*27'],['林檎売りの泡沫少女','yukkedoluce'],['REVOLVER','Royal Scandal'],['レクイエム','Kanaria'],['恋愛勇者','Last note.'],['恋愛裁判','40mP'],['劣等上等','Giga'],['六兆年と一夜物語','kemu'],['ロキ','みきとP'],['ローリンガール','wowaka'],['ロミオとシンデレラ','doriko']],
+  'わ':[['忘れてやらない','結束バンド'],['ワルキューレがとまらない','ワルキューレ'],['ワルキューレは裏切らない','ワルキューレ'],['ワールドイズマイン','']],
+  'other':[['Snow halation','μ\'s'],['Fire Bird','Roselia'],['Arrietty\'s Song','セシル・コルベル'],['D/N/A','Azari'],['daze','じん'],['Player X','King Gnu']]
 };
 const RL={'あ':'あ行','か':'か行','さ':'さ行','た':'た行','な':'な行','は':'は行','ま':'ま行','や':'や行','ら':'ら行','わ':'わ行','other':'ABC'};
 const allSongs=Object.values(SD).flat();
+
+/* ランダムピック */
 document.getElementById('randBtn').addEventListener('click',()=>{
   const s=allSongs[Math.floor(Math.random()*allSongs.length)];
   document.getElementById('pickSong').textContent='♪ '+s[0];
@@ -524,6 +593,8 @@ document.getElementById('randBtn').addEventListener('click',()=>{
   const rp=document.getElementById('randPick');
   rp.classList.remove('show');void rp.offsetWidth;rp.classList.add('show');
 });
+
+/* 曲リスト（タップでYouTube検索） */
 function renderSongs(f){
   const list=document.getElementById('slist'),cnt=document.getElementById('scnt');
   list.innerHTML='';let total=0;
@@ -532,7 +603,10 @@ function renderSongs(f){
     const items=SD[row];if(!items||!items.length)return;
     const h=document.createElement('div');h.className='row-hdr';h.textContent=RL[row]||row;list.appendChild(h);
     items.forEach(([n,a])=>{
-      const r=document.createElement('div');r.className='srow';
+      const r=document.createElement('a');
+      r.className='srow';
+      r.href='https://www.youtube.com/results?search_query='+encodeURIComponent(n+(a?' '+a:''));
+      r.target='_blank';r.rel='noopener noreferrer';
       r.innerHTML='<span class="sdot"></span><span class="sname">'+n+'</span>'+(a?'<span class="sart">'+a+'</span>':'');
       list.appendChild(r);total++;
     });
@@ -546,6 +620,90 @@ document.getElementById('fbar').addEventListener('click',e=>{
   b.classList.add('active');renderSongs(b.dataset.r);
 });
 renderSongs('all');
+
+/* アーティストマップ（あいうえお順） */
+const artistMap={};
+allSongs.forEach(([song,artist])=>{
+  const key=artist||'（不明）';
+  if(!artistMap[key])artistMap[key]=[];
+  artistMap[key].push(song);
+});
+const ARL={'あ':'あ行','か':'か行','さ':'さ行','た':'た行','な':'な行','は':'は行','ま':'ま行','や':'や行','ら':'ら行','わ':'わ行','ABC':'ABC'};
+function getARow(name){
+  const c=name[0]||'';
+  if(/^[あ-おア-オ]/.test(c)||/^[AaIiUuEeOo]/.test(c))return 'あ';
+  if(/^[か-ごカ-ゴ]/.test(c))return 'か';
+  if(/^[さ-ぞサ-ゾ]/.test(c))return 'さ';
+  if(/^[た-どタ-ド]/.test(c))return 'た';
+  if(/^[な-のナ-ノ]/.test(c))return 'な';
+  if(/^[は-ぽハ-ポ]/.test(c))return 'は';
+  if(/^[ま-もマ-モ]/.test(c))return 'ま';
+  if(/^[や-よヤ-ヨ]/.test(c))return 'や';
+  if(/^[ら-ろラ-ロ]/.test(c))return 'ら';
+  if(/^[わ-んワ-ン]/.test(c))return 'わ';
+  if(/^[A-Za-z]/.test(c))return 'ABC';
+  return 'ABC';
+}
+const sortedArtists=Object.keys(artistMap).sort((a,b)=>a.localeCompare(b,'ja'));
+
+/* アーティストリスト描画 */
+function renderArtists(filter){
+  const list=document.getElementById('alist'),cnt=document.getElementById('acnt');
+  list.innerHTML='';
+  let total=0;
+  const groups={};
+  sortedArtists.forEach(artist=>{
+    const row=getARow(artist);
+    if(filter!=='all'&&row!==filter)return;
+    if(!groups[row])groups[row]=[];
+    groups[row].push(artist);
+    total++;
+  });
+  const rowOrder=['あ','か','さ','た','な','は','ま','や','ら','わ','ABC'];
+  rowOrder.forEach(row=>{
+    if(!groups[row])return;
+    const h=document.createElement('div');h.className='arow-hdr';h.textContent=ARL[row]||row;list.appendChild(h);
+    groups[row].forEach(artist=>{
+      const r=document.createElement('div');r.className='arow';
+      r.innerHTML='<span class="adot"></span><span class="aname">'+artist+'</span><span class="atap">♪ タップ</span>';
+      r.addEventListener('click',()=>openArtistModal(artist));
+      list.appendChild(r);
+    });
+  });
+  if(!total)list.innerHTML='<div style="text-align:center;padding:24px;color:var(--text3);font-size:.85rem">見つかりませんでした 🌸</div>';
+  cnt.textContent=total+' アーティスト';
+}
+document.getElementById('afbar').addEventListener('click',e=>{
+  const b=e.target.closest('.afbtn');if(!b)return;
+  document.querySelectorAll('.afbtn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');renderArtists(b.dataset.ar);
+});
+renderArtists('all');
+
+/* モーダル */
+const modal=document.getElementById('artistModal');
+function openArtistModal(artist){
+  document.getElementById('modalTitle').textContent='🌹 '+artist;
+  const body=document.getElementById('modalBody');
+  body.innerHTML='';
+  artistMap[artist].forEach(song=>{
+    const a=document.createElement('a');
+    a.className='modal-srow';
+    a.href='https://www.youtube.com/results?search_query='+encodeURIComponent(song+(artist!=='（不明）'?' '+artist:''));
+    a.target='_blank';a.rel='noopener noreferrer';
+    a.innerHTML='<span class="adot"></span><span class="sname">♪ '+song+'</span>';
+    body.appendChild(a);
+  });
+  const c=document.createElement('div');c.className='modal-scnt';
+  c.textContent=artistMap[artist].length+' 曲';
+  body.appendChild(c);
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+document.getElementById('modalClose').addEventListener('click',closeModal);
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+function closeModal(){modal.classList.remove('open');document.body.style.overflow='';}
 </script>
 </body>
 </html>
